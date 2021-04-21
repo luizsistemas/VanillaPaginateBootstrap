@@ -5,11 +5,14 @@ class Pagination {
     this.changePage = changePage
     this.rowsPerPage = rowsPerPage
     this.totalRows = totalRows
+    this.startPage = 0
+    this.endPage = 10
   }
 
   handleButton(button) {
     button.addEventListener('click', (e) => {
       e.preventDefault()
+      e.stopPropagation()
       this.page = button.dataset.page
       this.changePage(this.page, this.rowsPerPage)
       this.renderPaginate()
@@ -36,23 +39,27 @@ class Pagination {
     return li
   }
 
-  getPages(containerPaginate) {
-    let startPage, endPage
-    const totalPage = Math.ceil(this.totalRows / this.rowsPerPage)
+  setRangePages(totalPage) {
+    console.log(this.page, totalPage)
     if (this.page < 10) {
-      startPage = this.page
-      endPage = 10
+      this.startPage = 1
+      this.endPage = 10
     } else if (this.page >= 10 && this.page <= totalPage) {
-      startPage = this.page
-      endPage = this.page + 10
+      this.startPage = this.page
+      this.endPage += 10
     } else {
-      startPage = totalPage
-      endPage = totalPage
+      this.startPage = totalPage
+      this.endPage = totalPage
     }
-    const prevPage = startPage > 1 ? startPage - 1 : 1
-    const nextPage = endPage < totalPage ? endPage + 1 : endPage
-    const prevDisable = startPage === 1
-    const nextDisable = endPage === totalPage
+  }
+
+  getPages(containerPaginate) {
+    const totalPage = Math.ceil(this.totalRows / this.rowsPerPage)
+    this.setRangePages(totalPage)
+    const prevPage = this.startPage > 1 ? this.startPage - 1 : 1
+    const nextPage = this.endPage < totalPage ? this.endPage + 1 : this.endPage
+    const prevDisable = this.startPage === 1
+    const nextDisable = this.endPage === totalPage
 
     containerPaginate.appendChild(
       this.buildBtnPage(
@@ -63,7 +70,7 @@ class Pagination {
       )
     )
 
-    for (let i = startPage; i <= endPage; i++) {
+    for (let i = this.startPage; i <= this.endPage; i++) {
       const active = this.page === i
       containerPaginate.appendChild(this.buildBtnPage(false, i, i, active))
     }

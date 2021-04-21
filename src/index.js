@@ -1,22 +1,19 @@
 import axios from 'axios'
 import Pagination from './utils/pagination'
 import './style.css'
+import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
-function loadComments(page, rowsPerPage) {
-  axios
-    .get(
-      `https://jsonplaceholder.typicode.com/comments?_page=${page}&_limit=${rowsPerPage}`
-    )
-    .then(({ data, headers }) => {
-      render(data)
-    })
+async function loadComments(page, rowsPerPage) {
+  const response = await axios.get(
+    `https://jsonplaceholder.typicode.com/comments?_page=${page}&_limit=${rowsPerPage}`
+  )
+  render(response.data)
 }
 
 function render(data) {
   let comments = data
   let pageHtml = ``
-  let currentPage = 1
-
   comments.forEach((comment) => {
     pageHtml += `
       <div class="comment">
@@ -25,29 +22,28 @@ function render(data) {
         <p>${comment.body} ${comment.id}</p>
       </div>`
   })
-  pageHtml += `<div class="paginate"></div>`
   const container = document.querySelector('.container')
   container.innerHTML = pageHtml
+}
+
+async function component() {
+  const element = document.getElementById('app')
+  let currentPage = 1
+  console.log(element)
+  element.innerHTML = `
+    <h1>Comments</h1>
+    <div class="container"></div>
+    <div class="paginate"></div>
+  `
+  await loadComments(1, 5)
+
   new Pagination({
-    container: container.querySelector('.paginate'),
+    container: element.querySelector('.paginate'),
     page: currentPage,
-    totalRows: 100,
+    totalRows: 500,
     changePage: loadComments,
     rowsPerPage: 5,
   }).renderPaginate()
 }
 
-function component() {
-  const element = document.getElementById('app')
-
-  loadComments(1, 5)
-
-  element.innerHTML = `
-  <h1>Comments</h1>
-  <div class="container"></div>
-  `
-
-  return element
-}
-
-document.body.appendChild(component())
+component()
