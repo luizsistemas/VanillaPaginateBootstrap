@@ -9,6 +9,11 @@ class Pagination {
     this.endPage = 10
   }
 
+  addClasses(li, a) {
+    li.classList.add('page-item')
+    a.classList.add('page-link')
+  }
+
   buildBtnPrev() {
     const li = document.createElement('li')
     const a = document.createElement('a')
@@ -24,8 +29,8 @@ class Pagination {
       this.renderPaginate()
     })
 
-    li.classList.add('page-item')
-    a.classList.add('page-link')
+    this.addClasses(li, a)
+
     a.dataset.page = prevPage
     a.innerHTML = `<span aria-hidden="true">&laquo;</span>`
 
@@ -52,8 +57,7 @@ class Pagination {
   buildBtnPage(page, contentLink, currentPage) {
     const li = document.createElement('li')
     const a = document.createElement('a')
-    li.classList.add('page-item')
-    a.classList.add('page-link')
+    this.addClasses(li, a)
     a.dataset.page = page
     a.innerHTML = contentLink
     if (currentPage) {
@@ -82,8 +86,8 @@ class Pagination {
       this.renderPaginate()
     })
 
-    li.classList.add('page-item')
-    a.classList.add('page-link')
+    this.addClasses(li, a)
+
     a.dataset.page = nextPage
     a.innerHTML = `<span aria-hidden="true">&raquo;</span>`
 
@@ -102,7 +106,6 @@ class Pagination {
 
     for (let i = this.startPage; i <= this.endPage; i++) {
       const currentPage = this.page == i
-      console.log(this.page, i, currentPage)
       containerPaginate.appendChild(this.buildBtnPage(i, i, currentPage))
     }
 
