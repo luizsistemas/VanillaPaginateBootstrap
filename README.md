@@ -1,6 +1,6 @@
 # Vanilla Paginate Bootstrap 5
 
-Paginate with Javascript (webpack) Vanilla and Bootstrap 5.
+Paginate with Javascript (Webpack) Vanilla JS and Bootstrap 5.
 
 ## Example
 
