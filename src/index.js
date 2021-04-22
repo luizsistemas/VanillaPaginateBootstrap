@@ -29,7 +29,6 @@ function render(data) {
 async function component() {
   const element = document.getElementById('app')
   let currentPage = 1
-  console.log(element)
   element.innerHTML = `
     <h1>Comments</h1>
     <div class="container"></div>
