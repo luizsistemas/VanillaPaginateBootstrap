@@ -101,8 +101,9 @@ class Pagination {
     containerPaginate.appendChild(this.buildBtnPrev())
 
     for (let i = this.startPage; i <= this.endPage; i++) {
-      const active = this.page === i
-      containerPaginate.appendChild(this.buildBtnPage(i, i, active))
+      const currentPage = this.page == i
+      console.log(this.page, i, currentPage)
+      containerPaginate.appendChild(this.buildBtnPage(i, i, currentPage))
     }
 
     containerPaginate.appendChild(this.buildBtnNext())
