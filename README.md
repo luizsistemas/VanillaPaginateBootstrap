@@ -33,7 +33,7 @@ Call the renderPaginate method to render the pagination on the page:
 
 ```javascript
 new Pagination({
-  container: element.querySelector('.paginate'),
+  container: element.querySelector('.paginate'), // div that will receive pagination
   page: 1,
   totalRows: 500,
   changePage: loadComments, // method that accesses the API.
