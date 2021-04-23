@@ -1,10 +1,9 @@
 class Pagination {
-  constructor({ container, page, totalRows, changePage, rowsPerPage }) {
+  constructor({ container, page, changePage, rowsPerPage }) {
     this.container = container
     this.page = page
     this.changePage = changePage
     this.rowsPerPage = rowsPerPage
-    this.totalRows = totalRows
     this.startPage = 1
     this.endPage = 10
   }
@@ -112,8 +111,9 @@ class Pagination {
     containerPaginate.appendChild(this.buildBtnNext())
   }
 
-  renderPaginate() {
+  renderPaginate(totalRows) {
     this.container.innerHTML = ''
+    if (totalRows) this.totalRows = totalRows
     const content = document.createElement('nav')
     content.innerHTML = `<ul class="pagination"></ul>`
     const paginate = content.querySelector('.pagination')

@@ -39,10 +39,9 @@ async function component() {
   new Pagination({
     container: element.querySelector('.paginate'),
     page: currentPage,
-    totalRows: 500,
     changePage: loadComments,
     rowsPerPage: 5,
-  }).renderPaginate()
+  }).renderPaginate(500)
 }
 
 component()
