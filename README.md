@@ -38,6 +38,7 @@ new Pagination({
   changePage: loadComments, // method that accesses the API.
   rowsPerPage: 5,
 }).renderPaginate(500)
+
 ```
 
 This is it. ;)
