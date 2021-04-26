@@ -71,7 +71,6 @@ class Pagination {
     const li = document.createElement('li')
     const a = document.createElement('a')
     const nextPage = this.endPage + 1
-    const totalPage = Math.ceil(this.totalRows / this.rowsPerPage)
 
     a.addEventListener('click', (e) => {
       e.preventDefault()
@@ -86,7 +85,7 @@ class Pagination {
     a.dataset.page = nextPage
     a.innerHTML = `<span aria-hidden="true">&raquo;</span>`
 
-    if (this.endPage === totalPage) {
+    if (this.endPage === this.totalPage) {
       li.classList.add('disabled')
       a.setAttribute('aria-disabled', true)
     }
@@ -97,22 +96,22 @@ class Pagination {
   }
 
   getPages(containerPaginate) {
-    let totalPage = Math.ceil(this.totalRows / this.rowsPerPage)
+    this.totalPage = Math.ceil(this.totalRows / this.rowsPerPage)
     if (this.page < 1) this.page = 1
-    else if (this.page > totalPage) this.page = totalPage
+    else if (this.page > this.totalPage) this.page = this.totalPage
 
-    if (totalPage <= this.pages) {
+    if (this.totalPage <= this.pages) {
       this.startPage = 1
-      this.endPage = totalPage
+      this.endPage = this.totalPage
     } else {
       const pageAtBeginning = Math.floor(this.pages / 2)
       const pageAtEnd = Math.ceil(this.pages / 2) - 1
       if (this.page <= pageAtBeginning) {
         this.startPage = 1
         this.endPage = this.pages
-      } else if (this.page + pageAtEnd >= totalPage) {
-        this.startPage = totalPage - +this.pages + 1
-        this.endPage = totalPage
+      } else if (this.page + pageAtEnd >= this.totalPage) {
+        this.startPage = this.totalPage - +this.pages + 1
+        this.endPage = this.totalPage
       } else {
         this.startPage = this.page - pageAtBeginning
         this.endPage = this.page + pageAtEnd
