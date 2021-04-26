@@ -1,11 +1,12 @@
 class Pagination {
-  constructor({ container, page, changePage, rowsPerPage }) {
+  constructor({ container, page = 1, rowsPerPage = 20, changePage }) {
     this.container = container
     this.page = page
-    this.changePage = changePage
     this.rowsPerPage = rowsPerPage
+    this.changePage = changePage
     this.startPage = 1
     this.endPage = 10
+    this.pages = 10
   }
 
   addClasses(li, a) {
@@ -21,9 +22,7 @@ class Pagination {
     a.addEventListener('click', (e) => {
       e.preventDefault()
       e.stopPropagation()
-      this.startPage = this.startPage - 10 > 1 ? this.startPage - 10 : 1
-      this.endPage = this.startPage + 9
-      this.page = a.dataset.page
+      this.page = +a.dataset.page
       this.changePage(this.page, this.rowsPerPage)
       this.renderPaginate()
     })
@@ -47,7 +46,7 @@ class Pagination {
     button.addEventListener('click', (e) => {
       e.preventDefault()
       e.stopPropagation()
-      this.page = button.dataset.page
+      this.page = +button.dataset.page
       this.changePage(this.page, this.rowsPerPage)
       this.renderPaginate()
     })
@@ -77,10 +76,7 @@ class Pagination {
     a.addEventListener('click', (e) => {
       e.preventDefault()
       e.stopPropagation()
-      this.endPage =
-        this.endPage + 10 <= totalPage ? this.endPage + 10 : this.endPage
-      this.startPage = this.endPage - 9
-      this.page = a.dataset.page
+      this.page = +a.dataset.page
       this.changePage(this.page, this.rowsPerPage)
       this.renderPaginate()
     })
@@ -101,6 +97,28 @@ class Pagination {
   }
 
   getPages(containerPaginate) {
+    let totalPage = Math.ceil(this.totalRows / this.rowsPerPage)
+    if (this.page < 1) this.page = 1
+    else if (this.page > totalPage) this.page = totalPage
+
+    if (totalPage <= this.pages) {
+      this.startPage = 1
+      this.endPage = totalPage
+    } else {
+      const pageAtBeginning = Math.floor(this.pages / 2)
+      const pageAtEnd = Math.ceil(this.pages / 2) - 1
+      if (this.page <= pageAtBeginning) {
+        this.startPage = 1
+        this.endPage = this.pages
+      } else if (this.page + pageAtEnd >= totalPage) {
+        this.startPage = totalPage - +this.pages + 1
+        this.endPage = totalPage
+      } else {
+        this.startPage = this.page - pageAtBeginning
+        this.endPage = this.page + pageAtEnd
+      }
+    }
+
     containerPaginate.appendChild(this.buildBtnPrev())
 
     for (let i = this.startPage; i <= this.endPage; i++) {
